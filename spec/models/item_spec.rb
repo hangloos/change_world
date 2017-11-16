@@ -7,4 +7,8 @@
       it {should validate_presence_of(:name)}
       it {should validate_presence_of(:price)}
     end
+
+    context 'relationshps' do
+      it { should belong_to(:business)}
+    end
   end
