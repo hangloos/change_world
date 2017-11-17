@@ -77,7 +77,22 @@
             expect(json[:name]).to eq(businesses.first.name)
          end
       end
-  
+
+      context "if business does not exist" do
+        before { get "/api/businesses/1000" }
+
+        it "returns a status code of 404" do
+          expect(response).to have_http_status(404)
+        end
+
+        it "returns error messages of not found in JSON" do
+          expect(json).not_to be_empty
+          expect(json[:errors][:messages]).to eq({
+            :business=>"can't be found"
+            })
+        end
+      
+      end
 
 
 

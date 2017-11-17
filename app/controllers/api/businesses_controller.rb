@@ -19,8 +19,16 @@ class API::BusinessesController < ApplicationController
   end
 
   def show
-    business = Business.find(params[:id])
-    render json: business, status: 200
+    business = Business.find_by(id: params[:id])
+    if business
+      render json: business, status: 200
+    else
+      render json: { 
+          errors: { 
+              messages: {business: "can't be found"}
+            } 
+          }, status: 404
+    end
   end
 
 
