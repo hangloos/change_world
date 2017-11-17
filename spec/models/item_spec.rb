@@ -10,5 +10,6 @@
 
     context 'relationshps' do
       it { should belong_to(:business)}
+      it { should have_many(:offers).dependent(:destroy)}
     end
   end
