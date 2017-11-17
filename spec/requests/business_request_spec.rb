@@ -2,9 +2,12 @@
 
   RSpec.describe "Business Api", type: :request do
 
-      describe "GET /api/businesses" do
+    # initial data
 
         let!(:businesses) {FactoryGirl.create_list(:business, 5) }
+        let(:business_id) {businesses.first.id}
+
+      describe "GET /api/businesses" do
         
         before { get '/api/businesses'}
 
@@ -12,7 +15,6 @@
           expect(response).to have_http_status(200)
         end
          it "returns a collection of business in JSON" do
-            json = JSON.parse(response.body)
             expect(json).not_to be_empty
             expect(json.size).to eq(5)
          end
@@ -37,7 +39,6 @@
           end
           
           it "creates a business and returns it in JSON" do
-            json = JSON.parse(response.body, symbolize_names: true)
 
             expect(json).not_to be_empty
             expect(json[:id]).not_to eq(nil)
@@ -56,13 +57,26 @@
             expect(response).to have_http_status(422)
           end
           it "returns the validation error messages in JSON" do
-            json = JSON.parse(response.body, symbolize_names: true)
 
             expect(json).not_to be_empty
             expect(json[:errors][:messages]).to eq({:name=>["can't be blank"]})
           end
+        end
       end
-    end
+
+      describe "GET /api/businesses/:id" do
+        
+        before { get "/api/businesses/#{business_id}"}
+
+        it "returns a status code of 200" do
+          expect(response).to have_http_status(200)
+        end
+         it "returns a business in JSON" do
+            expect(json).not_to be_empty
+            expect(json[:id]).to eq(business_id)
+            expect(json[:name]).to eq(businesses.first.name)
+         end
+      end
   
 
 
