@@ -1,5 +1,5 @@
 FactoryGirl.define do
   factory :business do
-    name {Faker::Lorem.name}
+    name {Faker::Company.name}
   end
 end
