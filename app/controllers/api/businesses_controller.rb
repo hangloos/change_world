@@ -9,6 +9,8 @@ class API::BusinessesController < ApplicationController
     business = Business.new(business_params)
     if business.save
       render json: business, status: 201
+    else
+      render json: business.errors.messages, status: 422
     end
   end
 
