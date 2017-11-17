@@ -10,7 +10,11 @@ class API::BusinessesController < ApplicationController
     if business.save
       render json: business, status: 201
     else
-      render json: business.errors.messages, status: 422
+      render json: { 
+          errors: 
+            { messages:
+                  business.errors.messages 
+            } }, status: 422
     end
   end
 

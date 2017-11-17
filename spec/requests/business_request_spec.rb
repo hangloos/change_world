@@ -59,6 +59,7 @@
             json = JSON.parse(response.body, symbolize_names: true)
 
             expect(json).not_to be_empty
+            expect(json[:errors][:messages]).to eq({:name=>["can't be blank"]})
           end
       end
     end
