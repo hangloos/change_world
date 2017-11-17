@@ -19,9 +19,9 @@ class API::BusinessesController < ApplicationController
   end
 
   def show
-    business = Business.find_by(id: params[:id])
-    if business
-      render json: business, status: 200
+    set_business
+    if @business
+      render json: @business, status: 200
     else
       render json: { 
           errors: { 
@@ -31,11 +31,29 @@ class API::BusinessesController < ApplicationController
     end
   end
 
+  def update
+    set_business
+    if @business
+      @business.update(business_params)
+      render json: @business, status: 200
+    else
+      render json: {
+          errors: {
+            messages: {business: "can't be found"}
+          }
+      }, status: 404
+    end
+  end
+
 
 
 
 
   private
+
+  def set_business
+    @business = Business.find_by(id: params[:id])
+  end
 
   def business_params
     params.require(:business).permit(:name)
