@@ -98,7 +98,11 @@
 
       describe "PUT /api/businesses/:id" do
 
-        let(:valid_attributes) {
+        describe "if business exits" do
+
+          context "and has valid attributes" do
+
+            let(:valid_attributes) {
               {
               business: {
                   name: "Updated the name"}
@@ -106,21 +110,52 @@
               }
              } 
 
-        context "if business exits" do
 
-          before { put "/api/businesses/#{business_id}", params: valid_attributes}
+            before { put "/api/businesses/#{business_id}", params: valid_attributes}
 
-          it "updates the business" do
-            expect(json[:name]).to eq(valid_attributes[:business][:name])
+            it "updates the business" do
+              expect(json[:name]).to eq(valid_attributes[:business][:name])
+            end
+
+            it "returns a status code of 200" do
+              expect(response).to have_http_status(200)
+            end
           end
 
-          it "returns a status code of 200" do
-            expect(response).to have_http_status(200)
+
+          context "and has invalid attributes" do
+
+            let(:invalid_attributes) {
+              {
+              business: {
+                  name: ""}
+  
+              }
+             } 
+
+
+            before { put "/api/businesses/#{business_id}", params: invalid_attributes}
+
+            it "updates the business" do
+              expect(json[:name]).to eq(invalid_attributes[:business][:name])
+            end
+
+            it "returns a status code of 200" do
+              expect(response).to have_http_status(200)
+            end
           end
 
         end
 
          context "if business is not found" do
+
+          let(:valid_attributes) {
+              {
+              business: {
+                  name: "Updated the name"}
+  
+              }
+             } 
 
           before { put "/api/businesses/1000", params: valid_attributes}
 
