@@ -137,11 +137,12 @@
             before { put "/api/businesses/#{business_id}", params: invalid_attributes}
 
             it "updates the business" do
-              expect(json[:name]).to eq(invalid_attributes[:business][:name])
+              expect(json).not_to be_empty
+              expect(json[:errors][:messages]).to eq({:name=>["can't be blank"]})
             end
 
-            it "returns a status code of 200" do
-              expect(response).to have_http_status(200)
+            it "returns a status code of 422" do
+              expect(response).to have_http_status(422)
             end
           end
 
