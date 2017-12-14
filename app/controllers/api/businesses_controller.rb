@@ -1,6 +1,6 @@
 class API::BusinessesController < ApplicationController
 
-  before_action :set_business, only: [:show, :update]
+  before_action :set_business, only: [:show, :update, :destroy]
 
   def index
     businesses = Business.all
@@ -28,9 +28,10 @@ class API::BusinessesController < ApplicationController
     end
   end
 
-
-
-
+  def destroy
+    @business.destroy
+    :no_content
+  end
 
   private
 

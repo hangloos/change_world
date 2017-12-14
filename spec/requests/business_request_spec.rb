@@ -174,6 +174,34 @@
        end
 
 
+       describe 'DELETE /api/businesses/:id' do
+
+        context 'if business exits' do
+          before { delete "/api/businesses/#{business_id}"}
+          it 'returns a status code of 204' do
+            expect(response).to have_http_status(204)
+          end
+
+        end
+
+        context "if business is not found" do
+
+          before { delete "/api/businesses/1000"}
+
+           it "returns a status code 404" do
+            expect(response).to have_http_status(404)
+           end
+          
+           it "return error messgaes of not found in JSON" do
+            expect(json).not_to be_empty
+            expect(json[:errors][:messages]).to eq({
+              :business=>"can't be found"
+              })
+           end
+         end
+       end
+
+
 
 
 
