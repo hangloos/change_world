@@ -1,6 +1,7 @@
 class API::ItemsController < ApplicationController
 
-  before_action :set_business, only: [:index, :create]
+  before_action :set_business, only: [:index, :create, :destroy]
+  before_action :set_item, only: [:destroy]
 
   def index
     render json: @business.items, status: 200
@@ -13,6 +14,11 @@ class API::ItemsController < ApplicationController
     else
       render_errors
     end
+  end
+
+  def destroy
+    @item.destroy
+    :no_content
   end
 
 
@@ -46,5 +52,19 @@ class API::ItemsController < ApplicationController
       }, status: 404
     end
   end
+
+  def set_item
+    @item = @business.items.find_by(id: params[:id])
+    if !@item
+      render json: {
+        errors: {
+          messages: { item: "can't be found"}
+        }
+      }, status: 404
+    end
+  end
+
+
+
 
 end

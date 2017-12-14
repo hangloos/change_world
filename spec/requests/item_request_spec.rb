@@ -46,7 +46,7 @@
 
       #post/api/businesses/:business_id/items
 
-      describe ' POST /api/businesses/:business_id/items' do
+      describe 'POST /api/businesses/:business_id/items' do
 
          describe "when business exists" do
 
@@ -113,6 +113,37 @@
         end
       end
 
+
+      describe 'DELETE /api/businesses/:business_id/items' do
+        context "when business exists" do
+
+          context "and item exists" do
+
+            before { delete "/api/businesses/#{business_id}/items/#{item_id}"}
+
+            it "returns a status code of 204" do
+              expect(response).to have_http_status(204)
+            end
+
+          end
+
+          context "and item does not exist" do
+            before { delete "/api/businesses/#{business_id}/items/1000"}
+
+            it "returns a status code 404" do
+            expect(response).to have_http_status(404)
+           end
+          
+           it "return error messages of not found in JSON" do
+            expect(json).not_to be_empty
+            expect(json[:errors][:messages]).to eq({
+              :item=>"can't be found"
+              })
+           end
+          end
+        end
+
+      end
 
 
 
